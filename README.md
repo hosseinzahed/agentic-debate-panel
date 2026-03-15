@@ -53,7 +53,7 @@ You need the following Azure resources before running the project:
 
 ### 1. 🤖 Azure AI Foundry Project
 An **Azure AI Foundry** project (backed by an Azure AI Hub) that provides:
-- A deployed chat model (e.g. `gpt-4o-mini` or `gpt-4o`)
+- A deployed chat model (e.g. `gpt-5-mini`)
 - Web search tool capability (Bing grounding)
 
 Once created, copy the **project endpoint** from the Azure AI Foundry portal.
