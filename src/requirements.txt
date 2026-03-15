@@ -2,3 +2,7 @@ python-dotenv
 azure-identity
 agent-framework
 agent-framework-devui
+mcp
+httpx
+pydantic
+markitdown[all]
