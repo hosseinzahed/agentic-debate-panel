@@ -1,12 +1,12 @@
 # 🎙️ Agentic Debate Panel
 
-An agentic debate panel powered by **Microsoft Agent Framework** and **Azure AI**. Throw any topic at the panel and watch seven distinct expert agents argue it from their own unique perspectives — simultaneously.
+An agentic debate panel powered by **Microsoft Agent Framework** and **Azure AI**. Throw any topic at the panel and watch seven distinct expert agents argue it from their own unique perspectives — simultaneously or in a structured round-robin group chat.
 
 ---
 
 ## 🧠 About the Project
 
-The Agentic Debate Panel simulates a multi-perspective expert panel discussion. A user submits a debate topic and each panelist agent independently analyses the topic from their professional standpoint and responds concurrently. The responses are then aggregated into a single structured summary.
+The Agentic Debate Panel simulates a multi-perspective expert panel discussion. A user submits a debate topic and the panel can respond in two modes: all panelists fire simultaneously and their responses are aggregated into a single structured summary, or they take turns in a round-robin group chat where each agent can build on what the others have said.
 
 The panel consists of seven expert agents:
 
@@ -24,7 +24,14 @@ Each agent is limited to 100 words per response to keep the debate sharp and rea
 
 ### 🤖 Run Modes
 
-- **Debate Workflow** (`debate_workflow.py`) — Runs all agents concurrently via a `ConcurrentBuilder` orchestration and aggregates their responses into a single output. Served via the Agent Framework Dev UI.
+- **Parallel Workflow** (`debate_workflow.py`) — Runs all seven panelists concurrently via a `ConcurrentBuilder` orchestration and aggregates their responses into a single output.
+
+  ![Parallel workflow diagram](https://learn.microsoft.com/en-us/agent-framework/workflows/resources/images/orchestration-concurrent.png)
+
+- **Group Chat Workflow** (`debate_workflow.py`) — Runs the panelists in a round-robin sequence via a `GroupChatBuilder` orchestration. Each agent takes a turn (7 rounds total) so panelists can build on each other's points.
+
+  ![Group chat workflow diagram](https://learn.microsoft.com/en-us/agent-framework/workflows/resources/images/orchestration-groupchat.png)
+
 - **Single Agent Chat** (`single_agent_chat.py`) — Launches each panelist individually for direct chat. Useful for exploring a single agent's behaviour.
 
 ---
@@ -37,6 +44,7 @@ Key features used in this project:
 
 - **`client.as_agent()`** — Wraps an Azure OpenAI model deployment as a named agent with custom instructions.
 - **`ConcurrentBuilder`** — Orchestration primitive that runs multiple agents in parallel and merges results via a custom aggregator function.
+- **`GroupChatBuilder`** — Orchestration primitive that runs agents in a structured group chat, supporting custom speaker-selection functions and configurable round limits.
 - **`AzureOpenAIResponsesClient`** — Manages the connection to your Azure AI Foundry project endpoint.
 - **`AzureAISearchContextProvider`** — Injects relevant documents from Azure AI Search into agent context (RAG).
 - **`MCPStdioTool`** — Connects agents to local MCP servers over stdio (used for the Eurostat data server).
@@ -115,13 +123,16 @@ Make sure you are inside the `src/` directory before running:
 cd src
 ```
 
-### Run the full debate panel (concurrent workflow)
+### Run the debate panel
 
 ```bash
 python debate_workflow.py
 ```
 
-This launches the Agent Framework Dev UI in your browser. Enter a debate topic and all seven panelists will respond concurrently.
+This launches the Agent Framework Dev UI in your browser with two workflows available:
+
+- **Parallel Workflow** — Enter a debate topic and all seven panelists respond concurrently. Their responses are aggregated into a single structured output.
+- **Group Chat Workflow** — Enter a debate topic and the panelists take turns in a round-robin sequence (7 rounds), allowing each agent to react to the others.
 
 ### Run individual agents (single agent chat)
 
