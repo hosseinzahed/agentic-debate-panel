@@ -1,4 +1,4 @@
-# 🎙️ Agentic Debate Panel
+## 🎙️ Agentic Debate Panel with Microsoft Agent Framework
 
 An agentic debate panel powered by **Microsoft Agent Framework** and **Azure AI**. Throw any topic at the panel and watch seven distinct expert agents argue it from their own unique perspectives — simultaneously or in a structured round-robin group chat.
 
