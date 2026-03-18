@@ -26,11 +26,11 @@ Each agent is limited to 100 words per response to keep the debate sharp and rea
 
 - **Parallel Workflow** (`debate_workflow.py`) — Runs all seven panelists concurrently via a `ConcurrentBuilder` orchestration and aggregates their responses into a single output.
 
-  ![Parallel workflow diagram](https://learn.microsoft.com/en-us/agent-framework/workflows/resources/images/orchestration-concurrent.png)
+  <p align="center"><img src="https://learn.microsoft.com/en-us/agent-framework/workflows/resources/images/orchestration-concurrent.png" alt="Parallel workflow diagram" width="75%"></p>
 
 - **Group Chat Workflow** (`debate_workflow.py`) — Runs the panelists in a round-robin sequence via a `GroupChatBuilder` orchestration. Each agent takes a turn (7 rounds total) so panelists can build on each other's points.
 
-  ![Group chat workflow diagram](https://learn.microsoft.com/en-us/agent-framework/workflows/resources/images/orchestration-groupchat.png)
+  <p align="center"><img src="https://learn.microsoft.com/en-us/agent-framework/workflows/resources/images/orchestration-groupchat.png" alt="Group chat workflow diagram" width="75%"></p>
 
 - **Single Agent Chat** (`single_agent_chat.py`) — Launches each panelist individually for direct chat. Useful for exploring a single agent's behaviour.
 
