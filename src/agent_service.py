@@ -21,6 +21,8 @@ client = AzureOpenAIResponsesClient(
     # api_key=os.environ["PROJECT_API_KEY"]
 )
 
+## region Tool and Context Provider Setup
+
 # Web search tool using Azure OpenAI
 web_search = client.get_web_search_tool()
 
@@ -48,6 +50,8 @@ economy_context = AzureAISearchContextProvider(
     mode="semantic",  # Default mode
     top_k=3,  # Number of documents to retrieve
 )
+
+# endregion
 
 # Define the panelists with their unique perspectives and instructions
 software_engineer_agent = client.as_agent(
