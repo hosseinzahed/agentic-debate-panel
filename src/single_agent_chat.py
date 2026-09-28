@@ -1,6 +1,6 @@
 from agent_framework.devui import serve
 
-from agent_service import PANELISTS
+from agent_service import weather_forecaster_agent
 
 if __name__ == "__main__":
-    serve(entities=PANELISTS, auto_open=True)
+    serve(entities=[weather_forecaster_agent], auto_open=True)

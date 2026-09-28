@@ -42,4 +42,4 @@ group_chat_workflow = (
 )
 
 if __name__ == "__main__":
-    serve(entities=[parallel_workflow, group_chat_workflow], auto_open=True)
+    serve(entities=[parallel_workflow, group_chat_workflow], auto_open=True, auth_enabled=False)

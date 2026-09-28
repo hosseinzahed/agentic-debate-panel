@@ -2,8 +2,9 @@ import os
 import sys
 from dotenv import load_dotenv
 from agent_framework import MCPStdioTool
-from agent_framework.azure import AzureOpenAIResponsesClient, AzureAISearchContextProvider
-from azure.identity import AzureCliCredential
+from agent_framework.azure import AzureAISearchContextProvider
+from agent_framework.foundry import FoundryChatClient
+from azure.identity import AzureDeveloperCliCredential
 from utils import fetch_from_wikipedia
 from agent_framework.observability import configure_otel_providers
 
@@ -14,10 +15,10 @@ load_dotenv(override=True)
 configure_otel_providers()
 
 # Create a shared Azure OpenAI client instance to be used across all agents
-client = AzureOpenAIResponsesClient(
+client = FoundryChatClient(
     project_endpoint=os.environ["PROJECT_ENDPOINT"],
-    deployment_name="gpt-5-mini",
-    credential=AzureCliCredential(),
+    model="gpt-5.4-mini",
+    credential=AzureDeveloperCliCredential(),
     # api_key=os.environ["PROJECT_API_KEY"]
 )
 
@@ -25,6 +26,18 @@ client = AzureOpenAIResponsesClient(
 
 # Web search tool using Azure OpenAI
 web_search = client.get_web_search_tool()
+
+# Weather forecaster agent using Azure OpenAI
+weather_forecaster_agent = client.as_agent(
+    name="WeatherForecaster",
+    description="A meteorologist specializing in weather prediction, climate science, and atmospheric phenomena.",
+    instructions=(
+        "You are a professional meteorologist."
+        "Use web search to find the latest weather data, forecasts, and climate research before responding."
+        "Always provide citations for your sources."
+    ),
+    tools=[web_search]
+)
 
 # EU Compliance MCP tool using Azure OpenAI
 eu_compliance_mcp = client.get_mcp_tool(
@@ -45,7 +58,7 @@ eurostat_mcp = MCPStdioTool(
 economy_context = AzureAISearchContextProvider(
     endpoint=os.environ["SEARCH_ENDPOINT"],
     index_name="rag-arxiv",
-    #credential=AzureCliCredential(),
+    credential=AzureDeveloperCliCredential(),
     api_key=os.environ["SEARCH_API_KEY"],
     mode="semantic",  # Default mode
     top_k=3,  # Number of documents to retrieve
@@ -68,6 +81,8 @@ software_engineer_agent = client.as_agent(
         "HARD LIMIT: Your response MUST be under 100 words — no exceptions, no matter how complex the topic. "
         "Be conversational and casual — skip the jargon where you can, and write like you're chatting with a smart friend, not presenting a whitepaper."
     ),
+    tools=[web_search],
+    
 )
 
 economist_agent = client.as_agent(
@@ -84,7 +99,7 @@ economist_agent = client.as_agent(
         "HARD LIMIT: Your response MUST be under 100 words — no exceptions, no matter how complex the topic. "
         "Be conversational and casual — explain things like you're talking to a curious friend over coffee, not writing an academic paper."
     ),
-    context_providers=[economy_context]
+    #context_providers=[economy_context]
 )
 
 lawyer_agent = client.as_agent(
@@ -102,7 +117,7 @@ lawyer_agent = client.as_agent(
         "HARD LIMIT: Your response MUST be under 100 words — no exceptions, no matter how complex the topic. "
         "Be conversational and casual — cut the legalese, and explain your points like you're giving a friend a straight-talking legal reality check."
     ),
-    tools=[eu_compliance_mcp]
+    #tools=[eu_compliance_mcp]
 )
 
 researcher_agent = client.as_agent(
@@ -138,7 +153,7 @@ news_reporter_agent = client.as_agent(
         "HARD LIMIT: Your response MUST be under 100 words — no exceptions, no matter how complex the topic. "
         "Be conversational and casual — write like you're doing a quick on-air live update, not a long-form investigative piece."
     ),
-    tools=[eurostat_mcp]
+    #tools=[eurostat_mcp]
 )
 
 politician_agent = client.as_agent(
@@ -174,8 +189,10 @@ medical_doctor_agent = client.as_agent(
         "HARD LIMIT: Your response MUST be under 100 words — no exceptions, no matter how complex the topic. "
         "Be conversational and casual — explain things like you're a doctor talking to a patient, clear and human, not writing a clinical report."
     ),
-    tools=[web_search]
+    #tools=[web_search]
 )
+
+
 
 PANELISTS = [
     software_engineer_agent,
