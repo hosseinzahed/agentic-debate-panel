@@ -7,3 +7,6 @@ httpx
 pydantic
 markitdown[all]
 agent-framework-foundry-hosting>=1.0.0b260918
+agent-framework-a2a>=1.0.0b260918
+a2a-sdk[http-server]>=1.0.0
+uvicorn
